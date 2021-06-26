@@ -1,6 +1,13 @@
 INTRODUCTION
 ------------
-
+An Addon I created for Blender that implements merge behavior similar to the now defunct SoftImage XSI 3d modelling and animation 
+software package. Simply download the source or any release and drop the kadavar folder in your Blender 'Addon' folder. Perfect tool
+for speed modelling and/or rapid prototyping.
 
 PARAMETERS
 --------------
+Select atleast two vertexes (can select up to atleast 64 vertexes in sequence currently)
+Alt + K to access the behavior menu 
+Select "Merge at Point" option to see the magic
+
+Enjoy my creation which for years has helped me save hours on 3d modelling and focused more on animating and texturing instead!
