@@ -89,7 +89,7 @@ class MergePointOperator(bpy.types.Operator):
         teng = []
         
         # Ensure even count
-        if len(g) % 2 != 0:
+        if len(vx) % 2 != 0:
             self.report({'WARNING'}, "Odd number of vertices selected")
             return {'CANCELLED'}
         
