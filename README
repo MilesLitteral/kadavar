@@ -5,7 +5,7 @@ software package. Simply download the source or any release and drop the kadavar
 
 HOW TO INSTALL
 --------------
-Download this archive as a zip, open blender -> preferences -> addons click the options menu in the corner and select "Install From Disk", navigate to the .zip, and double click it.
+Download one of the .zips from Release, open blender -> preferences -> addons click the options menu in the corner and select "Install From Disk", navigate to the .zip, and double click it.
 Then, enable Kadavar. Alt + K shortcut will bring up its menu.
 
 PARAMETERS
