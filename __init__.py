@@ -85,30 +85,17 @@ class MergePointOperator(bpy.types.Operator):
                 XX.append(vx)
             elif(len(vx) <= 1 and len(vx) > 2):
                 del(vx[:])
-
-        for g in XX:
-            print(len(g))
-            #teng = [(XX[0][0], XX[0][1]), (XX[0][2], XX[0][3])]
-            #, (,), (,), (,),(,),(,),(,),(,),(,)]
-            if len(g) <= 4:
-                teng = [(g[0], g[1]), (g[2], g[3])]
-            elif len(g) <= 6:
-                teng = [(g[0], g[1]), (g[2], g[3]), (g[4], g[5])]
-            elif len(g) <= 8:
-                    teng = [(g[0], g[1]), (g[2], g[3]), (g[4], g[5]), (g[6], g[7])] 
-            elif len(g) <= 10:
-                teng = [(g[0], g[1]), (g[2], g[3]), (g[4], g[5]), (g[6], g[7]), (g[8], g[9])]
-            elif len(g) <= 12:
-                teng = [(g[0], g[1]), (g[2], g[3]), (g[4], g[5]), (g[6], g[7]), (g[8], g[9]), (g[10], g[11])]
-            elif len(g) <= 14:
-                teng = [(g[0], g[1]), (g[2], g[3]), (g[4], g[5]), (g[6], g[7]), (g[8], g[9]), (g[10], g[11]), (g[12], g[13])]
-            elif len(g) <= 16:
-                teng = [(g[0], g[1]), (g[2], g[3]), (g[4], g[5]), (g[6], g[7]), (g[8], g[9]), (g[10], g[11]), (g[12], g[13]), (g[14], g[15])]
-            elif len(g) <= 18:
-                teng = [(g[0], g[1]), (g[2], g[3]), (g[4], g[5]), (g[6], g[7]), (g[8], g[9]), (g[10], g[11]), (g[12], g[13]), (g[14], g[15]), (g[16], g[17])]
-            elif len(g) <= 20:
-                teng = [(g[0], g[1]), (g[2], g[3]), (g[4], g[5]), (g[6], g[7]), (g[8], g[9]), (g[10], g[11]), (g[12], g[13]), (g[14], g[15]), (g[16], g[17]), (g[18], g[19])]
-
+                
+        teng = []
+        
+        # Ensure even count
+        if len(g) % 2 != 0:
+            self.report({'WARNING'}, "Odd number of vertices selected")
+            return {'CANCELLED'}
+        
+        # Automatically build pairs
+        for i in range(0, len(g), 2):
+            teng.append((g[i], g[i+1]))
 
         for i in teng:
             bmesh.ops.pointmerge(bm, verts=i, merge_co=i[-1].co)
