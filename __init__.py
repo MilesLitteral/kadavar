@@ -67,41 +67,39 @@ class MergePointOperator(bpy.types.Operator):
     bl_label = "Kadavar_Merge"
 
     def execute(self, context):
-        XX = []
-        vx = []
-        dm = bpy.context.object.data
 
-        if bpy.context.object.mode == 'EDIT':
+        obj = context.object
+        dm = obj.data
+
+        if obj.mode == 'EDIT':
             bm = bmesh.from_edit_mesh(dm)
-        elif bpy.context.object.mode == 'OBJECT':
+        else:
             bm = bmesh.new()
             bm.from_mesh(dm)
-            del(XX[:])
-            del(vx[:])
-            
-        for i in bm.select_history:
-            vx.append(i)  
-            if(len(vx) > 1 and len(vx) < 3):
-                XX.append(vx)
-            elif(len(vx) <= 1 and len(vx) > 2):
-                del(vx[:])
-                
-        teng = []
-        
-        # Ensure even count
-        if len(vx) % 2 != 0:
-            self.report({'WARNING'}, "Odd number of vertices selected")
-            return {'CANCELLED'}
-        
-        # Automatically build pairs
-        for i in range(0, len(g), 2):
-            teng.append((g[i], g[i+1]))
 
-        for i in teng:
-            bmesh.ops.pointmerge(bm, verts=i, merge_co=i[-1].co)
+        # Get selected vertices in selection order
+        selected = [elem for elem in bm.select_history if isinstance(elem, bmesh.types.BMVert)]
+
+        if len(selected) < 2:
+            self.report({'WARNING'}, "Select at least two vertices")
+            return {'CANCELLED'}
+
+        if len(selected) % 2 != 0:
+            self.report({'WARNING'}, "Select an even number of vertices")
+            return {'CANCELLED'}
+
+        # Merge pairs
+        for i in range(0, len(selected), 2):
+            v1 = selected[i]
+            v2 = selected[i + 1]
+            bmesh.ops.pointmerge(bm, verts=[v1, v2], merge_co=v2.co)
+
+        # Update mesh ONCE
+        if obj.mode == 'EDIT':
             bmesh.update_edit_mesh(dm)
-            bm.verts.index_update()
-            del(XX[:])
+        else:
+            bm.to_mesh(dm)
+            bm.free()
 
         return {'FINISHED'}
 
